@@ -121,6 +121,13 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   printf("Hello, World!\r\n");
+  uint8_t whoami = ICM_Read(ICM_WHO_AM_I);
+  printf("WHO_AM_I: 0x%02X\r\n", whoami);
+
+  ICM_Write(ICM_PWR_MGMT0, 0x0F);
+  HAL_Delay(10);
+
+
   while (1)
   {
 	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_SET);
@@ -129,6 +136,11 @@ int main(void)
 	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
 	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
 	  HAL_Delay(500);
+	    uint8_t xh = ICM_Read(ICM_GYRO_X_H);
+	    uint8_t xl = ICM_Read(ICM_GYRO_X_H + 1);
+	    int16_t gyro_x = (int16_t)(xh << 8 | xl);
+	    printf("GYRO_X: %d\r\n", gyro_x);
+	    HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
