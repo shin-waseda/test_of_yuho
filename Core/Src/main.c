@@ -116,30 +116,58 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   setbuf(stdout, NULL);
+
+  printf("Hello, World!\r\n");
+  HAL_Delay(100);
+
+  HAL_GPIO_WritePin(CS_GPIO_Port, CS_Pin, GPIO_PIN_SET);
+  HAL_Delay(10);
+
+  uint8_t whoami = ICM_Read(ICM_WHO_AM_I);
+  printf("WHO_AM_I: 0x%02X\r\n", whoami);
+
+  // ソフトリセット
+  ICM_Write(0x11, 0x01);
+  HAL_Delay(10);
+
+  // ジャイロ+加速度 有効化
+  ICM_Write(ICM_PWR_MGMT0, 0x0F);
+  HAL_Delay(10);
+
+  ICM_Write(0x51, 0x06);
+  HAL_Delay(10);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  printf("Hello, World!\r\n");
-  uint8_t whoami = ICM_Read(ICM_WHO_AM_I);
-  printf("WHO_AM_I: 0x%02X\r\n", whoami);
-
-  ICM_Write(ICM_PWR_MGMT0, 0x0F);
-  HAL_Delay(10);
-
-
   while (1)
   {
+    HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_SET);
 	  HAL_Delay(500);
+        HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_RESET);
 	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
 	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
 	  HAL_Delay(500);
-	    uint8_t xh = ICM_Read(ICM_GYRO_X_H);
-	    uint8_t xl = ICM_Read(ICM_GYRO_X_H + 1);
-	    int16_t gyro_x = (int16_t)(xh << 8 | xl);
-	    printf("GYRO_X: %d\r\n", gyro_x);
+    uint8_t xh = ICM_Read(ICM_GYRO_X_H);
+    uint8_t xl = ICM_Read(ICM_GYRO_X_H + 1);
+    uint8_t yh = ICM_Read(ICM_GYRO_Y_H);
+    uint8_t yl = ICM_Read(ICM_GYRO_Y_H + 1);
+    uint8_t zh = ICM_Read(ICM_GYRO_Z_H);
+    uint8_t zl = ICM_Read(ICM_GYRO_Z_H + 1);
+    int16_t gyro_x = (int16_t)(xh << 8 | xl);
+    int16_t gyro_y = (int16_t)(yh << 8 | yl);
+    int16_t gyro_z = (int16_t)(zh << 8 | zl);
+
+    printf("X: %6d  Y: %6d  Z: %6d\r\n", gyro_x, gyro_y, gyro_z);
 	    HAL_Delay(100);
     /* USER CODE END WHILE */
 

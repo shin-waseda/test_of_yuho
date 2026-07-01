@@ -6,6 +6,8 @@
 #define ICM_WHO_AM_I     0x75
 #define ICM_PWR_MGMT0    0x4E
 #define ICM_GYRO_X_H     0x25
+#define ICM_GYRO_Y_H     0x27
+#define ICM_GYRO_Z_H     0x29
 
 void ICM_Write(uint8_t reg, uint8_t data);
 uint8_t ICM_Read(uint8_t reg);
