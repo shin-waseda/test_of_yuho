@@ -1,0 +1,6 @@
+Debug/
+Release/
+*.o
+*.su
+*.cyclo
+*.d
