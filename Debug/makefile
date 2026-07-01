@@ -52,6 +52,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 yuho.list \
 
+OBJCOPY_BIN += \
+yuho.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +78,17 @@ yuho.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+yuho.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "yuho.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout yuho.elf yuho.list yuho.map
+	-$(RM) default.size.stdout yuho.bin yuho.elf yuho.list yuho.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

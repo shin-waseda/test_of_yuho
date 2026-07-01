@@ -124,12 +124,26 @@ int main(void)
 
   uint8_t whoami = ICM_Read(ICM_WHO_AM_I);
   printf("WHO_AM_I: 0x%02X\r\n", whoami);
+
+  HAL_GPIO_WritePin(Motor_STBY_GPIO_Port, Motor_STBY_Pin, GPIO_PIN_SET);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+
+  HAL_GPIO_WritePin(Motor_L_CW_GPIO_Port, Motor_L_CW_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(Motor_L_CCW_GPIO_Port, Motor_L_CCW_Pin, GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(Motor_R_CW_GPIO_Port, Motor_R_CW_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(Motor_R_CCW_GPIO_Port, Motor_R_CCW_Pin, GPIO_PIN_RESET);
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 2000);
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, 2000);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 2000);
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, 2000);
     HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
