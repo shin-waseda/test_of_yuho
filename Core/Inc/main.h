@@ -32,6 +32,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "gyro.h"
+#include "motor.h"
+
 
 /* USER CODE END Includes */
 

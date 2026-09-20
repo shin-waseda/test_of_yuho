@@ -61,7 +61,7 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
-static void MX_SDIO_SD_Init(void);
+ static void MX_SDIO_SD_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
@@ -107,7 +107,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_ADC1_Init();
-  MX_SDIO_SD_Init();
+//  MX_SDIO_SD_Init();
   MX_SPI2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -125,16 +125,10 @@ int main(void)
   uint8_t whoami = ICM_Read(ICM_WHO_AM_I);
   printf("WHO_AM_I: 0x%02X\r\n", whoami);
 
-  HAL_GPIO_WritePin(Motor_STBY_GPIO_Port, Motor_STBY_Pin, GPIO_PIN_SET);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+//  Motor_Init();
 
-  HAL_GPIO_WritePin(Motor_L_CW_GPIO_Port, Motor_L_CW_Pin, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(Motor_L_CCW_GPIO_Port, Motor_L_CCW_Pin, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(Motor_R_CW_GPIO_Port, Motor_R_CW_Pin, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(Motor_R_CCW_GPIO_Port, Motor_R_CCW_Pin, GPIO_PIN_RESET);
-      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 2000);
-      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, 2000);
+HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);  // ENC_L
+HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);  // ENC_R
 
   /* USER CODE END 2 */
 
@@ -142,8 +136,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 2000);
-      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, 2000);
     HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);
     HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
@@ -159,8 +151,15 @@ int main(void)
 	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
 	  HAL_Delay(500);
 
+//    Motor_Forward(2000, 2000);
+
     GyroData g = ICM_ReadGyro();
     printf("X: %6d  Y: %6d  Z: %6d\r\n", g.x, g.y, g.z);
+
+    uint16_t enc_l = __HAL_TIM_GET_COUNTER(&htim4);
+    uint16_t enc_r = __HAL_TIM_GET_COUNTER(&htim8);
+    printf("ENC_L: %5u  ENC_R: %5u\r\n", enc_l, enc_r);
+
     HAL_Delay(100);
     /* USER CODE END WHILE */
 
@@ -561,11 +560,11 @@ static void MX_TIM4_Init(void)
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC1Filter = 0;
+  sConfig.IC1Filter = 0x0F;
   sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC2Filter = 0;
+  sConfig.IC2Filter = 0x0F;
   if (HAL_TIM_Encoder_Init(&htim4, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -611,11 +610,11 @@ static void MX_TIM8_Init(void)
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC1Filter = 0;
+  sConfig.IC1Filter = 0x0F;
   sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC2Filter = 0;
+  sConfig.IC2Filter = 0x0F;
   if (HAL_TIM_Encoder_Init(&htim8, &sConfig) != HAL_OK)
   {
     Error_Handler();
