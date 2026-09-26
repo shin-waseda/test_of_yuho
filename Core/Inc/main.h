@@ -28,12 +28,18 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "gyro.h"
 #include "motor.h"
-
+#include "adc.h"
+#include "sdio.h"
+#include "spi.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* USER CODE END Includes */
 
@@ -50,9 +56,10 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 
-/* USER CODE END EM */
+extern uint16_t ad_r,ad_fr,ad_fl,ad_l,vabt;
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
+/* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
