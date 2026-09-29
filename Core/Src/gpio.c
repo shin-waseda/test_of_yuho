@@ -54,11 +54,11 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, LED_4_Pin|IR_L_Pin|IR_FL_Pin|LED_1_Pin
+  HAL_GPIO_WritePin(GPIOC, LED_4_Pin|IR_FL_Pin|IR_R_Pin|LED_1_Pin
                           |LED_2_Pin|LED_3_Pin|Motor_L_CCW_Pin|Motor_L_CW_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOH, IR_R_Pin|IR_FR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOH, IR_FR_Pin|IR_L_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, CS_Pin|Latch_595_Pin|SCLK_595_Pin|LED_5_Pin
@@ -67,17 +67,17 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, Motor_STBY_Pin|Motor_R_CW_Pin|Motor_R_CCW_Pin|LED_6_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_4_Pin IR_L_Pin IR_FL_Pin LED_1_Pin
+  /*Configure GPIO pins : LED_4_Pin IR_FL_Pin IR_R_Pin LED_1_Pin
                            LED_2_Pin LED_3_Pin Motor_L_CCW_Pin Motor_L_CW_Pin */
-  GPIO_InitStruct.Pin = LED_4_Pin|IR_L_Pin|IR_FL_Pin|LED_1_Pin
+  GPIO_InitStruct.Pin = LED_4_Pin|IR_FL_Pin|IR_R_Pin|LED_1_Pin
                           |LED_2_Pin|LED_3_Pin|Motor_L_CCW_Pin|Motor_L_CW_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : IR_R_Pin IR_FR_Pin */
-  GPIO_InitStruct.Pin = IR_R_Pin|IR_FR_Pin;
+  /*Configure GPIO pins : IR_FR_Pin IR_L_Pin */
+  GPIO_InitStruct.Pin = IR_FR_Pin|IR_L_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

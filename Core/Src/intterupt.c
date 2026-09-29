@@ -4,6 +4,8 @@ extern ADC_HandleTypeDef hadc1;
 extern TIM_HandleTypeDef htim6;
 
 extern uint16_t ad_r, ad_fr, ad_fl, ad_l, vabt;
+extern uint16_t r_on, fr_on, fl_on, l_on, r_off, fr_off, fl_off, l_off;
+
 
 #define ADC_TIMEOUT_MS  10   // Discontinuous化済みなので通常は一瞬で終わる
 #define IR_SETTLE_US    50   // LED点灯からセンサ読み取りまでの安定待ち
@@ -34,34 +36,42 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   HAL_GPIO_WritePin(IR_L_GPIO_Port,  IR_L_Pin,  GPIO_PIN_RESET);
   tim6_wait_us(IR_SETTLE_US);
 
-  uint16_t r_off  = adc_next(); // rank1: CH1
-  uint16_t fr_off = adc_next(); // rank2: CH0
-  uint16_t fl_off = adc_next(); // rank3: CH2
-  uint16_t l_off  = adc_next(); // rank4: CH3
+//  uint16_t r_off  = adc_next(); // rank1: CH1
+//  uint16_t fr_off = adc_next(); // rank2: CH0
+//  uint16_t fl_off = adc_next(); // rank3: CH2
+//  uint16_t l_off  = adc_next(); // rank4: CH3
+  r_off  = adc_next(); // rank1: CH1
+  fr_off = adc_next(); // rank2: CH0
+  fl_off = adc_next(); // rank3: CH2
+  l_off  = adc_next(); // rank4: CH3
   vabt            = adc_next(); // rank5: CH10 → 次はwrapしてrank1に戻る
 
   // --- 2. R ---
   HAL_GPIO_WritePin(IR_R_GPIO_Port, IR_R_Pin, GPIO_PIN_SET);
   tim6_wait_us(IR_SETTLE_US);
-  uint16_t r_on = adc_next(); // rank1: CH1
+//  uint16_t r_on = adc_next(); // rank1: CH1
+  r_on = adc_next(); // rank1: CH1
   HAL_GPIO_WritePin(IR_R_GPIO_Port, IR_R_Pin, GPIO_PIN_RESET);
 
   // --- 3. FR ---
   HAL_GPIO_WritePin(IR_FR_GPIO_Port, IR_FR_Pin, GPIO_PIN_SET);
   tim6_wait_us(IR_SETTLE_US);
-  uint16_t fr_on = adc_next(); // rank2: CH0
+//  uint16_t fr_on = adc_next(); // rank2: CH0
+  fr_on = adc_next(); // rank2: CH0
   HAL_GPIO_WritePin(IR_FR_GPIO_Port, IR_FR_Pin, GPIO_PIN_RESET);
 
   // --- 4. FL ---
   HAL_GPIO_WritePin(IR_FL_GPIO_Port, IR_FL_Pin, GPIO_PIN_SET);
   tim6_wait_us(IR_SETTLE_US);
-  uint16_t fl_on = adc_next(); // rank3: CH2
+//  uint16_t fl_on = adc_next(); // rank3: CH2
+  fl_on = adc_next(); // rank3: CH2
   HAL_GPIO_WritePin(IR_FL_GPIO_Port, IR_FL_Pin, GPIO_PIN_RESET);
 
   // --- 5. L ---
   HAL_GPIO_WritePin(IR_L_GPIO_Port, IR_L_Pin, GPIO_PIN_SET);
   tim6_wait_us(IR_SETTLE_US);
-  uint16_t l_on = adc_next(); // rank4: CH3
+//  uint16_t l_on = adc_next(); // rank4: CH3
+  l_on = adc_next(); // rank4: CH3
   HAL_GPIO_WritePin(IR_L_GPIO_Port, IR_L_Pin, GPIO_PIN_RESET);
 
     uint16_t vabt2 = adc_next(); // rank5: CH10
@@ -72,4 +82,5 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   ad_fr = (fr_on > fr_off) ? (fr_on - fr_off) : 0;
   ad_fl = (fl_on > fl_off) ? (fl_on - fl_off) : 0;
   ad_l  = (l_on  > l_off ) ? (l_on  - l_off ) : 0;
+
 }

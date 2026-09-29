@@ -60,6 +60,7 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint16_t ad_r,ad_fr,ad_fl,ad_l,vabt;
+uint16_t r_on, fr_on, fl_on, l_on, r_off, fr_off, fl_off, l_off;
 /* USER CODE END 0 */
 
 /**
@@ -92,7 +93,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_ADC1_Init();
-  // MX_SDIO_SD_Init();
+//  MX_SDIO_SD_Init();
   MX_SPI2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
@@ -125,34 +126,36 @@ HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);  // ENC_R
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_SET);
-	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_SET);
-	  HAL_Delay(500);
-    HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
-	  HAL_Delay(500);
+//    HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);
+//    HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_SET);
+//	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_SET);
+//	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_SET);
+//	  HAL_Delay(500);
+//    HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_RESET);
+//    HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_RESET);
+//    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_RESET);
+//    HAL_GPIO_WritePin(LED_4_GPIO_Port, LED_4_Pin, GPIO_PIN_RESET);
+//	  HAL_GPIO_WritePin(LED_5_GPIO_Port, LED_5_Pin, GPIO_PIN_RESET);
+//	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
+//	  HAL_Delay(500);
 
-    Motor_Forward(2000, 2000);
+//    Motor_Forward(2000, 2000);
 
-    GyroData g = ICM_ReadGyro();
-    printf("X: %6d  Y: %6d  Z: %6d\r\n", g.x, g.y, g.z);
+//    GyroData g = ICM_ReadGyro();
+//    printf("X: %6d  Y: %6d  Z: %6d\r\n", g.x, g.y, g.z);
+//
+//    uint16_t enc_l = __HAL_TIM_GET_COUNTER(&htim4);
+//    uint16_t enc_r = __HAL_TIM_GET_COUNTER(&htim8);
+//    printf("ENC_L: %5u  ENC_R: %5u\r\n", enc_l, enc_r);
 
-    uint16_t enc_l = __HAL_TIM_GET_COUNTER(&htim4);
-    uint16_t enc_r = __HAL_TIM_GET_COUNTER(&htim8);
-    printf("ENC_L: %5u  ENC_R: %5u\r\n", enc_l, enc_r);
 
 
-
-    printf("R:%4d FR:%4d FL:%4d L:%4d\n",
+    printf("R:%4d FR:%4d FL:%4d L:%4d\r\n",
           ad_r, ad_fr, ad_fl, ad_l);
+    printf("ON: r %d, fr %d, fl  %d,  l %d, \r\n OFF: r %d, fr %d, fl  %d,  l %d,\r\n", r_on, fr_on, fl_on, l_on, r_off, fr_off, fl_off, l_off);
+
 
 
 
