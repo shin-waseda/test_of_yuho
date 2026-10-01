@@ -141,20 +141,20 @@ HAL_TIM_Encoder_Start(&htim8, TIM_CHANNEL_ALL);  // ENC_R
 //	  HAL_GPIO_WritePin(LED_6_GPIO_Port, LED_6_Pin, GPIO_PIN_RESET);
 //	  HAL_Delay(500);
 
-//    Motor_Forward(2000, 2000);
+    Motor_Forward(200, 200);
 
 //    GyroData g = ICM_ReadGyro();
 //    printf("X: %6d  Y: %6d  Z: %6d\r\n", g.x, g.y, g.z);
 //
-//    uint16_t enc_l = __HAL_TIM_GET_COUNTER(&htim4);
-//    uint16_t enc_r = __HAL_TIM_GET_COUNTER(&htim8);
-//    printf("ENC_L: %5u  ENC_R: %5u\r\n", enc_l, enc_r);
+    uint16_t enc_l = __HAL_TIM_GET_COUNTER(&htim4);
+    uint16_t enc_r = __HAL_TIM_GET_COUNTER(&htim8);
+    printf("ENC_L: %5u  ENC_R: %5u\r\n", enc_l, enc_r);
 
 
 
     printf("R:%4d FR:%4d FL:%4d L:%4d\r\n",
           ad_r, ad_fr, ad_fl, ad_l);
-    printf("ON: r %d, fr %d, fl  %d,  l %d, \r\n OFF: r %d, fr %d, fl  %d,  l %d,\r\n", r_on, fr_on, fl_on, l_on, r_off, fr_off, fl_off, l_off);
+//    printf("ON: r %d, fr %d, fl  %d,  l %d, \r\n OFF: r %d, fr %d, fl  %d,  l %d,\r\n", r_on, fr_on, fl_on, l_on, r_off, fr_off, fl_off, l_off);
 
 
 
